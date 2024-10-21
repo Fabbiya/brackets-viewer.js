@@ -199,6 +199,14 @@ export function createNameContainer(): HTMLElement {
     name.classList.add('name');
     return name;
 }
+/**
+ * Creates a container which contains the name of a participant.
+ */
+export function createLocationContainer(): HTMLElement {
+    const location = document.createElement('div');
+    location.classList.add('location');
+    return location;
+}
 
 /**
  * Creates a container which contains the result of a match for a participant.

@@ -280,6 +280,7 @@ export interface ParticipantContainers {
     participant: HTMLElement,
     name: HTMLElement,
     result: HTMLElement,
+    location: HTMLElement,
 }
 
 /**

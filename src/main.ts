@@ -651,6 +651,7 @@ export class BracketsViewer {
             participant: dom.createParticipantContainer(participant && participant.id),
             name: dom.createNameContainer(),
             result: dom.createResultContainer(),
+            location:dom.createLocationContainer()
         };
 
         if (participant === null || participant === undefined)
@@ -658,7 +659,7 @@ export class BracketsViewer {
         else
             this.renderParticipant(containers, participant, side, originHint, matchLocation, roundNumber);
 
-        containers.participant.append(containers.name, containers.result);
+        containers.participant.append(containers.name,containers.location, containers.result);
 
         if (participant && participant.id !== null)
             this.setupMouseHover(participant.id, containers.participant, propagateHighlight);
