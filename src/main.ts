@@ -114,6 +114,7 @@ export class BracketsViewer {
             highlightParticipantOnHover:
                 config?.highlightParticipantOnHover ?? true,
             showRankingTable: config?.showRankingTable ?? true,
+            doubleSide: config?.doubleSide ?? true,
         };
 
         if (config?.onMatchClick) this._onMatchClick = config.onMatchClick;
@@ -299,13 +300,45 @@ export class BracketsViewer {
 
                 const roundContainer = dom.createRoundContainer(
                     roundId,
-                    roundName
+                    roundName,
+                    false,
                 );
                 for (const match of roundMatches)
                     roundContainer.append(this.createMatch(match, true));
 
                 groupContainer.append(roundContainer);
                 roundNumber++;
+            }
+            //** double side rounds and containers
+            if (this.config.doubleSide === true) {
+                roundNumber = matchesByRound.length - 1;
+                for (
+                    let index = matchesByRound.length - 1;
+                    index >= 0;
+                    index--
+                ) {
+                    const roundMatches = matchesByRound[index];
+                    const roundId = roundMatches[0].round_id;
+                    const roundName = this.getRoundName(
+                        {
+                            roundNumber,
+                            roundCount: 0,
+                            groupType: lang.toI18nKey("round_robin"),
+                        },
+                        lang.getRoundName
+                    );
+
+                    const roundContainer = dom.createRoundContainer(
+                        roundId,
+                        roundName,
+                        true
+                    );
+                    for (const match of roundMatches)
+                        roundContainer.append(this.createMatch(match, true));
+
+                    groupContainer.append(roundContainer);
+                    roundNumber++;
+                }
             }
 
             if (this.config.showRankingTable)
@@ -578,7 +611,7 @@ export class BracketsViewer {
                 getRoundName
             );
 
-            const roundContainer = dom.createRoundContainer(roundId, roundName);
+            const roundContainer = dom.createRoundContainer(roundId, roundName,false);
 
             const roundMatches =
                 fromToornament && roundNumber === 1
@@ -665,7 +698,8 @@ export class BracketsViewer {
 
             const roundContainer = dom.createRoundContainer(
                 finalMatch.round_id,
-                roundName
+                roundName,
+                false
             );
             roundContainer.append(this.createFinalMatch(finalType, finalMatch));
             upperBracket.append(roundContainer);
@@ -932,7 +966,7 @@ export class BracketsViewer {
 
         if (participant === null || participant === undefined)
             dom.setupBye(containers.name);
-        else
+        else {
             this.renderParticipant(
                 containers,
                 participant,
@@ -941,6 +975,7 @@ export class BracketsViewer {
                 matchLocation,
                 roundNumber
             );
+        }
 
         containers.participant.append(
             containers.name,
@@ -948,12 +983,13 @@ export class BracketsViewer {
             containers.result
         );
 
-        if (participant && participant.id !== null)
+        if (participant && participant.id !== null) {
             this.setupMouseHover(
                 participant.id,
                 containers.participant,
                 propagateHighlight
             );
+        }
 
         return containers.participant;
     }
@@ -1150,7 +1186,7 @@ export class BracketsViewer {
         locationContainer: HTMLElement,
         participant: ParticipantResult,
         originHint?: OriginHint,
-        matchLocation?: GroupType,
+        matchLocation?: GroupType
     ): void {
         if (originHint === undefined || participant.position === undefined)
             return;

@@ -102,6 +102,7 @@ export interface InternalViewerData {
  */
 export type Placement = 'none' | 'before' | 'after';
 
+
 /**
  * The possible sides of a participant.
  */
@@ -175,7 +176,11 @@ export interface Config {
     /**
      * Whether to clear any previously displayed data.
      */
-    clear?: boolean
+    clear?: boolean,
+    /**
+     * Whether to start from right to left or left to right.
+     */
+    doubleSide:Boolean,
 }
 
 /**

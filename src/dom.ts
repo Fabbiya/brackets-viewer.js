@@ -104,7 +104,7 @@ export function createRoundsContainer(): HTMLElement {
  * @param roundId ID of the round.
  * @param title Title of the round.
  */
-export function createRoundContainer(roundId: Id, title: string): HTMLElement {
+export function createRoundContainer(roundId: Id, title: string, reverse:Boolean): HTMLElement {
     const h3 = document.createElement('h3');
     h3.innerText = title;
 
